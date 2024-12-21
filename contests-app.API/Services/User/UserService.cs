@@ -19,6 +19,26 @@ namespace contests_app.API.Services.User
             _jwtProvider = jwtProvider;
         }
 
+        public async Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor)
+        {
+            var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            user.Name = name;
+            user.SurName = surName;
+            user.IsAdmin = isAdmin;
+            user.IsMentor = isMentor;
+
+            _dbContext.Users.Update(user);
+            await _dbContext.SaveChangesAsync();
+
+            return user.Adapt<Models.User>();
+        }
+
         public async Task<Models.User> GetById(Guid id)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);
@@ -48,7 +68,9 @@ namespace contests_app.API.Services.User
                 Name = name,
                 SurName = surName,
                 Login = login,
-                PasswordHash = passwordHash
+                PasswordHash = passwordHash,
+                IsAdmin = false,
+                IsMentor = false
             };
 
             await _dbContext.Users.AddAsync(user);

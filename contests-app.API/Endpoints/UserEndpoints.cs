@@ -11,6 +11,7 @@ namespace contests_app.API.Endpoints
 
             endpoints.MapGet(nameof(ById), ById).RequireAuthorization();
             endpoints.MapGet(nameof(CurrentUser), CurrentUser).RequireAuthorization();
+            endpoints.MapPatch(nameof(UpdateUser), UpdateUser).RequireAuthorization();
             endpoints.MapGet(nameof(Logout), Logout).RequireAuthorization();
 
             endpoints.MapGet(nameof(IsAuthenticated), IsAuthenticated);
@@ -18,6 +19,21 @@ namespace contests_app.API.Endpoints
             endpoints.MapPost(nameof(Login), Login);
 
             return endpoints;
+        }
+        
+
+        private static async Task<IResult> UpdateUser(PatchUserRequest request, IUserService userService)
+        {
+            try
+            {
+                var result = await userService.UpdateUser(request.Id, request.Name, request.SurName, request.IsAdmin, request.IsMentor);
+
+                return Results.Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
         }
 
         private static async Task<IResult> CurrentUser(HttpContext context, IUserService userService)
