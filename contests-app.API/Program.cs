@@ -30,20 +30,11 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddApiAuthentication(configuration);
 
-builder.Services.AddCors();
-
 var app = builder.Build();
 
-app.UseCors(x => x.AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowAnyOrigin());
-
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -51,5 +42,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.AddMappedEndpoints();
+
+if (app.Environment.IsProduction())
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ContestsDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
