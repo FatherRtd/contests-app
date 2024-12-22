@@ -1,10 +1,9 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatAnchor, MatButton, MatFabAnchor } from '@angular/material/button';
+import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 
@@ -29,8 +28,6 @@ export type RegisterFormControls = {
         NgIf,
         ReactiveFormsModule,
         MatCardActions,
-        MatIcon,
-        MatFabAnchor,
         RouterLink,
         MatAnchor,
     ],
