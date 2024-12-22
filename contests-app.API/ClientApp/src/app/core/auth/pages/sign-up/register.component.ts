@@ -1,16 +1,19 @@
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatCard, MatCardActions, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
 
 export type RegisterFormControls = {
-    username: FormControl<string>;
+    login: FormControl<string>;
     name: FormControl<string>;
-    surname: FormControl<string>;
+    surName: FormControl<string>;
     password: FormControl<string>;
     confirmPassword: FormControl<string>;
 };
@@ -38,19 +41,24 @@ export type RegisterFormControls = {
 export class RegisterComponent {
     @Input() error: string | null = null;
 
-    @Output() submitEM = new EventEmitter();
-
-    form: FormGroup<RegisterFormControls> = new FormGroup<RegisterFormControls>({
-        username: new FormControl('', { nonNullable: true }),
+    readonly form: FormGroup<RegisterFormControls> = new FormGroup<RegisterFormControls>({
+        login: new FormControl('', { nonNullable: true }),
         name: new FormControl('', { nonNullable: true }),
-        surname: new FormControl('', { nonNullable: true }),
+        surName: new FormControl('', { nonNullable: true }),
         password: new FormControl('', { nonNullable: true }),
         confirmPassword: new FormControl('', { nonNullable: true }),
     });
 
-    submit() {
+    private readonly auth = inject(AuthService);
+    private readonly destroy = inject(DestroyRef);
+    private readonly router = inject(Router);
+
+    onSubmit(): void {
         if (this.form.valid) {
-            this.submitEM.emit(this.form.value);
+            this.auth
+                .register(this.form.getRawValue())
+                .pipe(takeUntilDestroyed(this.destroy))
+                .subscribe(() => this.router.navigate(['/auth/login']));
         }
     }
 }
