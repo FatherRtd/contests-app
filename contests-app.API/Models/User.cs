@@ -10,5 +10,8 @@
 
         public bool IsAdmin { get; set; }
         public bool IsMentor { get; set; }
+
+        public Team OwnedTeam { get; set; }
+        public Team Team { get; set; }
     }
 }

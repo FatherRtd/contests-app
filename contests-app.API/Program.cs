@@ -3,6 +3,7 @@ using contests_app.API.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 using contests_app.API.Persistence;
 using contests_app.API.Services.Auth;
+using contests_app.API.Services.Team;
 using contests_app.API.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

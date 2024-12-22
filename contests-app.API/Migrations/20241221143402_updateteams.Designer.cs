@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using contests_app.API.Persistence;
@@ -11,9 +12,11 @@ using contests_app.API.Persistence;
 namespace contests_app.API.Migrations
 {
     [DbContext(typeof(ContestsDbContext))]
-    partial class ContestsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241221143402_updateteams")]
+    partial class updateteams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,9 +39,6 @@ namespace contests_app.API.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId")
-                        .IsUnique();
 
                     b.ToTable("Teams");
                 });
@@ -63,6 +63,9 @@ namespace contests_app.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("OwnedTeamId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
@@ -76,28 +79,27 @@ namespace contests_app.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OwnedTeamId")
+                        .IsUnique();
+
                     b.HasIndex("TeamId");
 
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("contests_app.API.Persistence.Entities.TeamEntity", b =>
-                {
-                    b.HasOne("contests_app.API.Persistence.Entities.UserEntity", "Owner")
-                        .WithOne("OwnedTeam")
-                        .HasForeignKey("contests_app.API.Persistence.Entities.TeamEntity", "OwnerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("contests_app.API.Persistence.Entities.UserEntity", b =>
                 {
+                    b.HasOne("contests_app.API.Persistence.Entities.TeamEntity", "OwnedTeam")
+                        .WithOne("Owner")
+                        .HasForeignKey("contests_app.API.Persistence.Entities.UserEntity", "OwnedTeamId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("contests_app.API.Persistence.Entities.TeamEntity", "Team")
                         .WithMany("Members")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("OwnedTeam");
 
                     b.Navigation("Team");
                 });
@@ -105,11 +107,8 @@ namespace contests_app.API.Migrations
             modelBuilder.Entity("contests_app.API.Persistence.Entities.TeamEntity", b =>
                 {
                     b.Navigation("Members");
-                });
 
-            modelBuilder.Entity("contests_app.API.Persistence.Entities.UserEntity", b =>
-                {
-                    b.Navigation("OwnedTeam")
+                    b.Navigation("Owner")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

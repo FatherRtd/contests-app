@@ -8,6 +8,7 @@ namespace contests_app.API.Persistence
         public ContestsDbContext(DbContextOptions<ContestsDbContext> options) : base(options) { }
 
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<TeamEntity> Teams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
