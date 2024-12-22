@@ -13,6 +13,7 @@ namespace contests_app.API.Endpoints
             endpoints.MapGet(nameof(All), All).RequireAuthorization();
             endpoints.MapGet(nameof(ById), ById).RequireAuthorization();
             endpoints.MapGet(nameof(ByUser), ByUser).RequireAuthorization();
+            endpoints.MapGet(nameof(My), My).RequireAuthorization();
             endpoints.MapPatch(nameof(AddUser), AddUser).RequireAuthorization();
 
             return endpoints;
@@ -25,11 +26,19 @@ namespace contests_app.API.Endpoints
             return Results.Ok(result);
         }
 
-        public static async Task<IResult> Create(CreateTeamRequest request, ITeamService teamService)
+        public static async Task<IResult> Create(CreateTeamRequest request, ITeamService teamService, HttpContext context)
         {
             try
             {
-                var result = await teamService.CreateTeam(request.Name, request.UserId);
+                var userIdClaim = context.User.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var userId = new Guid(userIdClaim);
+
+                var result = await teamService.CreateTeam(request.Name, userId);
 
                 return Results.Ok(result);
             }
@@ -71,6 +80,28 @@ namespace contests_app.API.Endpoints
         {
             try
             {
+                var result = await teamService.GetTeamByUser(userId);
+
+                return Results.Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        }
+
+        public static async Task<IResult> My(ITeamService teamService, HttpContext context)
+        {
+            try
+            {
+                var userIdClaim = context.User.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var userId = new Guid(userIdClaim);
+
                 var result = await teamService.GetTeamByUser(userId);
 
                 return Results.Ok(result);
