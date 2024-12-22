@@ -13,12 +13,12 @@ namespace contests_app.API.Persistence.Configuration
             builder.HasOne(t => t.Owner)
                    .WithOne(u => u.OwnedTeam)
                    .HasForeignKey<TeamEntity>(t => t.OwnerId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(t => t.Members)
                    .WithOne(u => u.Team)
                    .HasForeignKey(u => u.TeamId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

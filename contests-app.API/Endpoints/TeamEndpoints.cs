@@ -15,8 +15,23 @@ namespace contests_app.API.Endpoints
             endpoints.MapGet(nameof(ByUser), ByUser).RequireAuthorization();
             endpoints.MapGet(nameof(My), My).RequireAuthorization();
             endpoints.MapPatch(nameof(AddUser), AddUser).RequireAuthorization();
+            endpoints.MapDelete(nameof(Delete), Delete).RequireAuthorization();
 
             return endpoints;
+        }
+
+        public static async Task<IResult> Delete(Guid id, ITeamService teamService)
+        {
+            try
+            {
+                await teamService.Delete(id);
+
+                return Results.Ok();
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
         }
 
         public static async Task<IResult> All(ITeamService teamService)

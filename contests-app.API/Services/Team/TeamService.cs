@@ -1,7 +1,6 @@
 ﻿using contests_app.API.Models;
 using contests_app.API.Persistence;
 using contests_app.API.Persistence.Entities;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace contests_app.API.Services.Team
@@ -69,7 +68,7 @@ namespace contests_app.API.Services.Team
             };
         }
 
-        public async Task<Models.Team> GetTeamByUser(Guid userId)
+        public async Task<Models.Team?> GetTeamByUser(Guid userId)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
@@ -82,6 +81,11 @@ namespace contests_app.API.Services.Team
                                          .Include(x => x.Owner)
                                          .Include(x => x.Members)
                                          .FirstOrDefaultAsync(x => x.Members.Contains(user));
+
+            if (result == null)
+            {
+                return null;
+            }
 
             return new Models.Team
             {
@@ -169,6 +173,19 @@ namespace contests_app.API.Services.Team
 
             team.Members.Add(user);
             
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Delete(Guid teamId)
+        {
+            var team = await _dbContext.Teams.FirstOrDefaultAsync(x => x.Id == teamId);
+
+            if ( team == null)
+            {
+                throw new Exception("Team not found");
+            }
+
+            _dbContext.Teams.Remove(team);
             await _dbContext.SaveChangesAsync();
         }
     }
