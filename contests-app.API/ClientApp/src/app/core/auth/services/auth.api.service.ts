@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 import { API } from '../../tokens/api';
 
@@ -30,6 +30,7 @@ export interface UserResponse {
     isMentor: boolean;
     ownedTeam: null | Team;
     team: null | Team;
+    avatar: null | string;
 }
 
 export interface UpdateUserRequest {
@@ -64,7 +65,13 @@ export class AuthApiService {
     }
 
     currentUser(): Observable<UserResponse | null> {
-        return this.http.get<UserResponse>(`${this.api}/currentUser`).pipe(catchError(() => of(null)));
+        return this.http.get<UserResponse>(`${this.api}/currentUser`).pipe(
+            catchError(() => of(null)),
+            map(
+                (user) =>
+                    <UserResponse>{ ...user, avatar: 'https://material.angular.io/assets/img/examples/shiba1.jpg' }
+            )
+        );
     }
 
     updateUser(body: UpdateUserRequest): Observable<void> {

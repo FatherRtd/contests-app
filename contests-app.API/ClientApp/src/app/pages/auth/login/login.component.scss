@@ -16,16 +16,20 @@ mat-card-content {
     justify-content: center;
 }
 
+mat-card {
+    padding: 1rem;
+}
+
 mat-card-content {
     margin-top: 1rem;
 }
 
-mat-card {
-    width: 18rem;
-}
-
 mat-card-actions {
     gap: 1rem;
+}
+
+mat-card {
+    width: 18rem;
 }
 
 .error {
@@ -38,4 +42,8 @@ mat-card-actions {
 .button {
     display: flex;
     justify-content: flex-end;
+}
+
+.title {
+    padding-top: 0.75rem !important;
 }

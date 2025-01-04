@@ -1,0 +1,23 @@
+:host {
+    display: block;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    height: 4.75rem;
+    padding: 0 2rem;
+    gap: 3rem;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-box-shadow: 4px 4px 8px -1px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 4px 4px 8px -1px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 8px -1px rgba(34, 60, 80, 0.2);
+
+    &_section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

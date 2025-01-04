@@ -2,13 +2,21 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatAnchor, MatButton } from '@angular/material/button';
-import { MatCard, MatCardActions, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatAnchor, MatButton, MatIconAnchor } from '@angular/material/button';
+import {
+    MatCard,
+    MatCardActions,
+    MatCardAvatar,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+} from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../core/auth/services/auth.service';
 
 export type RegisterFormControls = {
     login: FormControl<string>;
@@ -33,6 +41,10 @@ export type RegisterFormControls = {
         MatCardActions,
         RouterLink,
         MatAnchor,
+        MatCardAvatar,
+        MatCardHeader,
+        MatIcon,
+        MatIconAnchor,
     ],
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss',
