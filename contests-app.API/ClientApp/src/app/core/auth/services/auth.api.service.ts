@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 
 import { API } from '../../tokens/api';
 
@@ -65,13 +65,7 @@ export class AuthApiService {
     }
 
     currentUser(): Observable<UserResponse | null> {
-        return this.http.get<UserResponse>(`${this.api}/currentUser`).pipe(
-            catchError(() => of(null)),
-            map(
-                (user) =>
-                    <UserResponse>{ ...user, avatar: 'https://material.angular.io/assets/img/examples/shiba1.jpg' }
-            )
-        );
+        return this.http.get<UserResponse>(`${this.api}/currentUser`).pipe(catchError(() => of(null)));
     }
 
     updateUser(body: UpdateUserRequest): Observable<void> {

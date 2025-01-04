@@ -38,6 +38,10 @@ export class AuthService {
         return this.authApiService.logout().pipe(tap(() => this._checkAuthenticated$.next()));
     }
 
+    checkAuthenticated(): void {
+        this._checkAuthenticated$.next();
+    }
+
     currentUser(): Observable<UserResponse | null> {
         return this.authApiService.currentUser();
     }

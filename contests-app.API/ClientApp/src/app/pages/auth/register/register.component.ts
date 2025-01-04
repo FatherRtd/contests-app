@@ -61,16 +61,16 @@ export class RegisterComponent {
         confirmPassword: new FormControl('', { nonNullable: true }),
     });
 
-    private readonly auth = inject(AuthService);
-    private readonly destroy = inject(DestroyRef);
-    private readonly router = inject(Router);
+    readonly auth = inject(AuthService);
+    readonly dr = inject(DestroyRef);
+    readonly router = inject(Router);
 
     onSubmit(): void {
         if (this.form.valid) {
             this.auth
                 .register(this.form.getRawValue())
-                .pipe(takeUntilDestroyed(this.destroy))
-                .subscribe(() => this.router.navigate(['/auth/login']));
+                .pipe(takeUntilDestroyed(this.dr))
+                .subscribe(() => this.router.navigate(['/auth']));
         }
     }
 }

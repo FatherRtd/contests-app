@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, Input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAnchor, MatButton, MatIconAnchor } from '@angular/material/button';
 import {
@@ -13,7 +14,7 @@ import {
 import { MatFormField } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/auth/services/auth.service';
 
@@ -55,10 +56,15 @@ export class LoginComponent {
     });
 
     readonly auth = inject(AuthService);
+    readonly dr = inject(DestroyRef);
+    readonly router = inject(Router);
 
     onSubmit(): void {
         if (this.form.valid) {
-            this.auth.login(this.form.getRawValue()).subscribe();
+            this.auth
+                .login(this.form.getRawValue())
+                .pipe(takeUntilDestroyed(this.dr))
+                .subscribe(() => this.router.navigate(['/home']));
         }
     }
 }
