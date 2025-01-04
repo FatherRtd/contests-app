@@ -1,0 +1,25 @@
+<header class="header">
+    <div class="header_section header_section--left">
+
+    </div>
+    <div class="header_section header_section--right">
+        <ng-container *ngIf="user$ | async as user; else login">
+            <app-user [user]="user" [matMenuTriggerFor]="menu"></app-user>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onLogout()">Logout</button>
+            </mat-menu>
+
+        </ng-container>
+
+        <ng-template #login>
+            <a mat-fab extended routerLink="/auth" color="secondary">
+                <mat-icon
+                    aria-hidden="false"
+                    aria-label="login icon"
+                    fontIcon="login"
+                ></mat-icon>
+                Login
+            </a>
+        </ng-template>
+    </div>
+</header>

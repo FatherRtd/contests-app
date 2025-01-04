@@ -1,13 +1,21 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatAnchor, MatButton } from '@angular/material/button';
-import { MatCard, MatCardActions, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatAnchor, MatButton, MatIconAnchor } from '@angular/material/button';
+import {
+    MatCard,
+    MatCardActions,
+    MatCardAvatar,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle,
+} from '@angular/material/card';
 import { MatFormField } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../core/auth/services/auth.service';
 
 export type LoginFormControls = {
     login: FormControl<string>;
@@ -29,6 +37,10 @@ export type LoginFormControls = {
         MatAnchor,
         MatCardActions,
         RouterLink,
+        MatCardHeader,
+        MatCardAvatar,
+        MatIcon,
+        MatIconAnchor,
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss',
