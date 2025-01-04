@@ -19,6 +19,8 @@ namespace contests_app.API.Persistence.Configuration
         {
             builder.HasKey(u => u.Id);
 
+            builder.Property(u => u.Avatar).IsRequired(false);
+
             builder.HasOne(u => u.Team)
                    .WithMany(t => t.Members)
                    .HasForeignKey(u => u.TeamId)
@@ -38,7 +40,7 @@ namespace contests_app.API.Persistence.Configuration
                 PasswordHash = _passwordHasher.Generate("user"),
                 IsAdmin = false,
                 IsMentor = false,
-                Avatar = "",
+                Avatar = "https://material.angular.io/assets/img/examples/shiba1.jpg",
             };
 
             var defaultAdmin = new UserEntity
@@ -50,7 +52,7 @@ namespace contests_app.API.Persistence.Configuration
                 PasswordHash = _passwordHasher.Generate("admin"),
                 IsAdmin = true,
                 IsMentor = false,
-                Avatar = "",
+                Avatar = "https://material.angular.io/assets/img/examples/shiba1.jpg",
             };
 
             var defaultMentor = new UserEntity
@@ -62,7 +64,7 @@ namespace contests_app.API.Persistence.Configuration
                 PasswordHash = _passwordHasher.Generate("mentor"),
                 IsAdmin = false,
                 IsMentor = true,
-                Avatar = "",
+                Avatar = "https://material.angular.io/assets/img/examples/shiba1.jpg",
             };
 
             builder.HasData(defaultMentor);
