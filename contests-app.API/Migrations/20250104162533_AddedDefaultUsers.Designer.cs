@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using contests_app.API.Persistence;
@@ -11,9 +12,11 @@ using contests_app.API.Persistence;
 namespace contests_app.API.Migrations
 {
     [DbContext(typeof(ContestsDbContext))]
-    partial class ContestsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250104162533_AddedDefaultUsers")]
+    partial class AddedDefaultUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,41 +86,6 @@ namespace contests_app.API.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("448bb116-6a2f-4c04-9e5f-162d686f9720"),
-                            Avatar = "",
-                            IsAdmin = false,
-                            IsMentor = true,
-                            Login = "mentor",
-                            Name = "Mentor",
-                            PasswordHash = "$2a$11$vWUBFNEctvGRWS9DFaAU9uM98nf9rPv3QV/UcH3vP7knsrtJMwDJ6",
-                            SurName = "Mentor"
-                        },
-                        new
-                        {
-                            Id = new Guid("124beadd-a131-4277-a5aa-af3506fe3b59"),
-                            Avatar = "",
-                            IsAdmin = true,
-                            IsMentor = false,
-                            Login = "admin",
-                            Name = "Admin",
-                            PasswordHash = "$2a$11$OGgY.r9OKM4qZgwylQEpnOQjWD4TvxgKzBLN9J8.GBb9PSbsJGNaO",
-                            SurName = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("ef24cd9d-1b46-4957-8d7f-5ee4492bb52e"),
-                            Avatar = "",
-                            IsAdmin = false,
-                            IsMentor = false,
-                            Login = "user",
-                            Name = "User",
-                            PasswordHash = "$2a$11$xuWK8EfPJjyapYJEsUo4TOCp.LitO8J9Mev4rGSlDzzJq1WcONOkG",
-                            SurName = "User"
-                        });
                 });
 
             modelBuilder.Entity("contests_app.API.Persistence.Entities.TeamEntity", b =>

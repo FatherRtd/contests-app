@@ -12,6 +12,7 @@ namespace contests_app.API.Persistence.Entities
         public string PasswordHash { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsMentor { get; set; }
+        public string Avatar { get; set; }
 
         public Guid? TeamId { get; set; }
         public TeamEntity Team { get; set; }
