@@ -9,7 +9,7 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
     const authService = inject(AuthService);
 
-    return next(req.clone()).pipe(
+    return next(req).pipe(
         catchError((err: unknown) => {
             if (err instanceof HttpErrorResponse) {
                 if (err.status === 401) {
