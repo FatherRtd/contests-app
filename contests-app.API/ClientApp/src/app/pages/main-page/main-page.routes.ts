@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 
 import { MainPageComponent } from './main-page.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { TeamsPageComponent } from './pages/teams-page/teams-page.component';
+import { authGuard } from '../../core/auth/guards/auth.guard';
 
 export const mainPageRoutes: Routes = [
     {
@@ -10,12 +12,17 @@ export const mainPageRoutes: Routes = [
         pathMatch: 'full',
     },
     {
-        path: 'home',
+        path: '',
         component: MainPageComponent,
         children: [
             {
-                path: '',
+                path: 'home',
                 component: LandingPageComponent,
+            },
+            {
+                path: 'teams',
+                canActivate: [authGuard],
+                component: TeamsPageComponent,
             },
         ],
     },
