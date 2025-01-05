@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 
 import { MainPageComponent } from './main-page.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import { TeamsPageComponent } from './pages/teams-page/teams-page.component';
-import { authGuard } from '../../core/auth/guards/auth.guard';
+import { TeamPageComponent } from './pages/team-page/team-page.component';
+import { authGuard } from '../../guards/auth.guard';
 
 export const mainPageRoutes: Routes = [
     {
@@ -20,9 +20,9 @@ export const mainPageRoutes: Routes = [
                 component: LandingPageComponent,
             },
             {
-                path: 'teams',
+                path: 'team',
                 canActivate: [authGuard],
-                component: TeamsPageComponent,
+                component: TeamPageComponent,
             },
         ],
     },

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 
-import { API } from '../../tokens/api';
+import { API } from '../tokens/api';
 
 export interface LoginRequest {
     login: string;

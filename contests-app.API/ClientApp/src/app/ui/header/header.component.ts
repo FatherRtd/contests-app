@@ -8,8 +8,8 @@ import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { UserComponent } from './components/user/user.component';
-import { UserResponse } from '../../../core/auth/services/auth.api.service';
-import { AuthService } from '../../../core/auth/services/auth.service';
+import { UserResponse } from '../../services/auth.api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-header',

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-    selector: 'app-teams-page',
+    selector: 'app-team-page',
     standalone: true,
     imports: [],
-    templateUrl: './teams-page.component.html',
-    styleUrl: './teams-page.component.scss',
+    templateUrl: './team-page.component.html',
+    styleUrl: './team-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamsPageComponent {}
+export class TeamPageComponent {}

@@ -16,7 +16,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 
-import { AuthService } from '../../../core/auth/services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 
 export type RegisterFormControls = {
     login: FormControl<string>;

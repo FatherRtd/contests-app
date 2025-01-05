@@ -1,0 +1,4 @@
+<img *ngIf="user?.avatar as avatar; else defaultUser" [ngSrc]="avatar" [height]="40" [width]="40" class="avatar" />
+<ng-template #defaultUser>
+    <mat-icon>account_circle</mat-icon>
+</ng-template>
