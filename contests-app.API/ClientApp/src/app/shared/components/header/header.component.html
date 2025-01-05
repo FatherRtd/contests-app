@@ -1,6 +1,10 @@
 <header class="header">
     <div class="header_section header_section--left">
-
+        <a routerLink="/home">
+            <video autoplay height="40px" width="40px" class="header_logo">
+                <source src="/assets/img/sticker.webm" />
+            </video>
+        </a>
     </div>
     <div class="header_section header_section--right">
         <ng-container *ngIf="user$ | async as user; else login">
@@ -8,16 +12,11 @@
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="onLogout()">Logout</button>
             </mat-menu>
-
         </ng-container>
 
         <ng-template #login>
             <a mat-fab extended routerLink="/auth" color="secondary">
-                <mat-icon
-                    aria-hidden="false"
-                    aria-label="login icon"
-                    fontIcon="login"
-                ></mat-icon>
+                <mat-icon aria-hidden="false" aria-label="login icon" fontIcon="login"></mat-icon>
                 Login
             </a>
         </ng-template>
