@@ -1,5 +1,6 @@
 ﻿using contests_app.API.Models.Requests;
 using contests_app.API.Services.User;
+using Microsoft.AspNetCore.Mvc;
 
 namespace contests_app.API.Endpoints
 {
@@ -26,7 +27,7 @@ namespace contests_app.API.Endpoints
         {
             try
             {
-                var result = await userService.UpdateUser(request.Id, request.Name, request.SurName, request.IsAdmin, request.IsMentor);
+                var result = await userService.UpdateUser(request.Id, request.Name, request.SurName, request.IsAdmin, request.IsMentor, request.Avatar);
 
                 return Results.Ok(result);
             }

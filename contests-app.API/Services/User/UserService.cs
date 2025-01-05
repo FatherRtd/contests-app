@@ -1,6 +1,7 @@
 ﻿using contests_app.API.Persistence;
 using contests_app.API.Persistence.Entities;
 using contests_app.API.Services.Auth;
+using contests_app.API.Services.S3;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +12,17 @@ namespace contests_app.API.Services.User
         private readonly ContestsDbContext _dbContext;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtProvider _jwtProvider;
+        private readonly IS3Storage _s3Storage;
 
-        public UserService(ContestsDbContext dbContext, IPasswordHasher passwordHasher, IJwtProvider jwtProvider)
+        public UserService(ContestsDbContext dbContext, IPasswordHasher passwordHasher, IJwtProvider jwtProvider, IS3Storage s3Storage)
         {
             _dbContext = dbContext;
             _passwordHasher = passwordHasher;
             _jwtProvider = jwtProvider;
+            _s3Storage = s3Storage;
         }
 
-        public async Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor)
+        public async Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor, string avatar)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -32,6 +35,15 @@ namespace contests_app.API.Services.User
             user.SurName = surName;
             user.IsAdmin = isAdmin;
             user.IsMentor = isMentor;
+
+
+            if (string.IsNullOrWhiteSpace(avatar) == false)
+            {
+                var byteArray = Convert.FromBase64String(avatar);
+                var fileName = $"user-{id.ToString()}.jpg";
+                var imageSrc = await _s3Storage.UploadImageAsync(byteArray, fileName);
+                user.Avatar = imageSrc;
+            }
 
             _dbContext.Users.Update(user);
             await _dbContext.SaveChangesAsync();

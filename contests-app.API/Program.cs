@@ -1,8 +1,10 @@
+using AspNetCore.Yandex.ObjectStorage.Extensions;
 using contests_app.API;
 using contests_app.API.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 using contests_app.API.Persistence;
 using contests_app.API.Services.Auth;
+using contests_app.API.Services.S3;
 using contests_app.API.Services.Team;
 using contests_app.API.Services.User;
 
@@ -21,6 +23,17 @@ builder.Services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOption
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddYandexObjectStorage(options =>
+{
+    var config = configuration.GetSection("S3Options");
+    options.BucketName = config["BucketName"];
+    options.AccessKey = config["AccessKey"];
+    options.SecretKey = config["SecretKey"];
+    options.Location = "ru-central1";
+});
+
+builder.Services.AddScoped<IS3Storage, S3Storage>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITeamService, TeamService>();

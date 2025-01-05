@@ -5,5 +5,6 @@
          string Name,
          string SurName,
          bool IsAdmin,
-         bool IsMentor);
+         bool IsMentor,
+        string Avatar);
 }
