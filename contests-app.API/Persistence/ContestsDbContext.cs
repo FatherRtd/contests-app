@@ -9,6 +9,7 @@ namespace contests_app.API.Persistence
 
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<TeamEntity> Teams { get; set; }
+        public DbSet<CaseEntity> Cases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

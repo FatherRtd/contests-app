@@ -42,10 +42,6 @@ namespace contests_app.API.Services.S3
                 {
                     throw new Exception("Не удалось удалить изображение");
                 }
-
-                var result = await response.ReadResultAsStringAsync();
-
-                return result.Value;
             }
             catch
             {
