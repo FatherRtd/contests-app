@@ -31,5 +31,26 @@ namespace contests_app.API.Services.S3
                 throw new Exception("Ошибка при сохранении");
             }
         }
+
+        public async Task DeleteImageAsync(string name)
+        {
+            try
+            {
+                var response = await _storageService.ObjectService.DeleteAsync(name);
+
+                if (response.IsSuccessStatusCode == false)
+                {
+                    throw new Exception("Не удалось удалить изображение");
+                }
+
+                var result = await response.ReadResultAsStringAsync();
+
+                return result.Value;
+            }
+            catch
+            {
+                throw new Exception("Ошибка при удалении");
+            }
+        }
     }
 }

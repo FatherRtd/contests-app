@@ -41,6 +41,12 @@ namespace contests_app.API.Services.User
             {
                 var byteArray = Convert.FromBase64String(avatar);
                 var fileName = $"user-{id.ToString()}.jpg";
+
+                if (string.IsNullOrWhiteSpace(user.Avatar) == false)
+                {
+                    await _s3Storage.DeleteImageAsync(fileName);
+                }
+
                 var imageSrc = await _s3Storage.UploadImageAsync(byteArray, fileName);
                 user.Avatar = imageSrc;
             }
