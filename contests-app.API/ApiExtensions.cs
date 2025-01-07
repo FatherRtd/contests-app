@@ -12,7 +12,8 @@ namespace contests_app.API
         {
             builder.MapGroup("api")
                    .MapUsersEndpoints()
-                   .MapTeamEndpoints();
+                   .MapTeamEndpoints()
+                   .MapCaseEndpoints();
         }
 
         public static void AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)

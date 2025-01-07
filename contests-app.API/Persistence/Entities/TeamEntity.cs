@@ -11,6 +11,6 @@
         public ICollection<UserEntity> Members { get; set; }
 
         public Guid? SelectedCaseId { get; set; }
-        public CaseEntity SelectedCase { get; set; }
+        public CaseEntity? SelectedCase { get; set; }
     }
 }

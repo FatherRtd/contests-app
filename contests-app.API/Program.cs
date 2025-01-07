@@ -4,6 +4,7 @@ using contests_app.API.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 using contests_app.API.Persistence;
 using contests_app.API.Services.Auth;
+using contests_app.API.Services.Case;
 using contests_app.API.Services.S3;
 using contests_app.API.Services.Team;
 using contests_app.API.Services.User;
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IS3Storage, S3Storage>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<ICaseService, CaseService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

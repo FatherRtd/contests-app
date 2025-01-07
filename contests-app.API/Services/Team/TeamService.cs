@@ -19,6 +19,7 @@ namespace contests_app.API.Services.Team
             var result = await _dbContext.Teams
                                          .Include(x => x.Owner)
                                          .Include(x => x.Members)
+                                         .Include(x => x.SelectedCase).ThenInclude(c => c.Owner)
                                          .ToListAsync();
 
             var mappedResult = result.Select(x => new Models.Team
@@ -36,7 +37,20 @@ namespace contests_app.API.Services.Team
                     Id = m.Id,
                     Name = m.Name,
                     SurName = m.SurName,
-                })
+                }),
+                SelectedCase = new Models.Case
+                {
+                    Id = x.SelectedCase.Id,
+                    Description = x.SelectedCase.Description,
+                    ImageUrl = x.SelectedCase.ImageUrl,
+                    Title = x.SelectedCase.Title,
+                    Owner = new Models.User
+                    {
+                        Id = x.SelectedCase.Owner.Id,
+                        Name = x.SelectedCase.Owner.Name,
+                        SurName = x.SelectedCase.Owner.SurName,
+                    }
+                }
             });
 
             return mappedResult;
@@ -47,6 +61,7 @@ namespace contests_app.API.Services.Team
             var result = await _dbContext.Teams
                                          .Include(x => x.Owner)
                                          .Include(x => x.Members)
+                                         .Include(x => x.SelectedCase).ThenInclude(c => c.Owner)
                                          .FirstOrDefaultAsync(x => x.Id == id);
 
             return new Models.Team
@@ -64,7 +79,20 @@ namespace contests_app.API.Services.Team
                     Id = m.Id,
                     Name = m.Name,
                     SurName = m.SurName,
-                })
+                }),
+                SelectedCase = new Models.Case
+                {
+                    Id = result.SelectedCase.Id,
+                    Description = result.SelectedCase.Description,
+                    ImageUrl = result.SelectedCase.ImageUrl,
+                    Title = result.SelectedCase.Title,
+                    Owner = new Models.User
+                    {
+                        Id = result.SelectedCase.Owner.Id,
+                        Name = result.SelectedCase.Owner.Name,
+                        SurName = result.SelectedCase.Owner.SurName,
+                    }
+                }
             };
         }
 
@@ -80,6 +108,7 @@ namespace contests_app.API.Services.Team
             var result = await _dbContext.Teams
                                          .Include(x => x.Owner)
                                          .Include(x => x.Members)
+                                         .Include(x => x.SelectedCase).ThenInclude(c => c.Owner)
                                          .FirstOrDefaultAsync(x => x.Members.Contains(user));
 
             if (result == null)
@@ -102,7 +131,20 @@ namespace contests_app.API.Services.Team
                     Id = m.Id,
                     Name = m.Name,
                     SurName = m.SurName,
-                })
+                }),
+                SelectedCase = new Models.Case
+                {
+                    Id = result.SelectedCase.Id,
+                    Description = result.SelectedCase.Description,
+                    ImageUrl = result.SelectedCase.ImageUrl,
+                    Title = result.SelectedCase.Title,
+                    Owner = new Models.User
+                    {
+                        Id = result.SelectedCase.Owner.Id,
+                        Name = result.SelectedCase.Owner.Name,
+                        SurName = result.SelectedCase.Owner.SurName,
+                    }
+                }
             };
         }
 
@@ -186,6 +228,22 @@ namespace contests_app.API.Services.Team
             }
 
             _dbContext.Teams.Remove(team);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task SelectCase(Guid teamGuid, Guid caseGuid)
+        {
+            var caseEntity = await _dbContext.Cases.SingleOrDefaultAsync(x => x.Id == caseGuid);
+            var teamEntity = await _dbContext.Teams.SingleOrDefaultAsync(x => x.Id == teamGuid);
+
+            if (caseEntity == null || teamEntity == null)
+            {
+                throw new Exception("not found");
+            }
+
+            teamEntity.SelectedCase = caseEntity;
+
+            _dbContext.Teams.Update(teamEntity);
             await _dbContext.SaveChangesAsync();
         }
     }

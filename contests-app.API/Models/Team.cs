@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public IEnumerable<User> Users { get; set; }
         public User Owner { get; set; }
+        public Case SelectedCase { get; set; }
     }
 }

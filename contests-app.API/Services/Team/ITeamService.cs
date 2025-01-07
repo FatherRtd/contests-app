@@ -8,5 +8,6 @@
         Task<Models.Team> CreateTeam(string name, Guid userGuid);
         Task AddUser(Guid teamId, Guid userId);
         Task Delete(Guid teamId);
+        Task SelectCase(Guid teamGuid, Guid caseGuid);
     }
 }
