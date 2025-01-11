@@ -8,7 +8,7 @@ import AppHeader from '@/components/ui/header/AppHeader.vue'
       <AppHeader />
     </header>
 
-    <main class="mx-8 my-4 flex-1 flex">
+    <main class="mx-8 my-4 flex">
       <router-view />
     </main>
   </section>

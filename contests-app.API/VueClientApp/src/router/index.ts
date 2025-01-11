@@ -6,4 +6,12 @@ const router = createRouter({
   routes,
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.length === 0) {
+    next(from.fullPath)
+  } else {
+    next()
+  }
+})
+
 export default router
