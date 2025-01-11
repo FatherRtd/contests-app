@@ -17,6 +17,7 @@ namespace contests_app.API.Endpoints
             endpoints.MapPatch(nameof(AddUser), AddUser).RequireAuthorization();
             endpoints.MapDelete(nameof(Delete), Delete).RequireAuthorization();
             endpoints.MapPatch(nameof(SelectCase), SelectCase).RequireAuthorization();
+            endpoints.MapPatch(nameof(AddEvaluation), AddEvaluation).RequireAuthorization();
 
             return endpoints;
         }
@@ -133,6 +134,28 @@ namespace contests_app.API.Endpoints
             try
             {
                 await teamService.SelectCase(teamId, caseId);
+
+                return Results.Ok();
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        }
+
+        public static async Task<IResult> AddEvaluation(AddEvaluationRequest request, ITeamService teamService, HttpContext context)
+        {
+            try
+            {
+                var userIdClaim = context.User.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var userId = new Guid(userIdClaim);
+
+                await teamService.AddEvaluation(request.TeamId, userId, request.Score, request.Comment);
 
                 return Results.Ok();
             }

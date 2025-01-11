@@ -1,4 +1,5 @@
-﻿using contests_app.API.Models;
+﻿using contests_app.API.Migrations;
+using contests_app.API.Models;
 using contests_app.API.Persistence;
 using contests_app.API.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace contests_app.API.Services.Team
                                          .Include(x => x.Owner)
                                          .Include(x => x.Members)
                                          .Include(x => x.SelectedCase).ThenInclude(c => c.Owner)
+                                         .Include(x => x.Evaluations).ThenInclude(x => x.Evaluator)
                                          .ToListAsync();
 
             var mappedResult = result.Select(x => new Models.Team
@@ -38,7 +40,7 @@ namespace contests_app.API.Services.Team
                     Name = m.Name,
                     SurName = m.SurName,
                 }),
-                SelectedCase = new Models.Case
+                SelectedCase = x.SelectedCase == null ? null : new Models.Case
                 {
                     Id = x.SelectedCase.Id,
                     Description = x.SelectedCase.Description,
@@ -50,7 +52,19 @@ namespace contests_app.API.Services.Team
                         Name = x.SelectedCase.Owner.Name,
                         SurName = x.SelectedCase.Owner.SurName,
                     }
-                }
+                },
+                Evaluations = x.Evaluations.Select(e => new Models.Evaluation
+                {
+                    Id = e.Id,
+                    Evaluator = new Models.User
+                    {
+                        Id = e.Evaluator.Id,
+                        Name = e.Evaluator.Name,
+                        SurName = e.Evaluator.SurName,
+                    },
+                    Comment = e.Comment,
+                    Score = e.Score
+                })
             });
 
             return mappedResult;
@@ -92,7 +106,19 @@ namespace contests_app.API.Services.Team
                         Name = result.SelectedCase.Owner.Name,
                         SurName = result.SelectedCase.Owner.SurName,
                     }
-                }
+                },
+                Evaluations = result.Evaluations.Select(e => new Models.Evaluation
+                {
+                    Id = e.Id,
+                    Evaluator = new Models.User
+                    {
+                        Id = e.Evaluator.Id,
+                        Name = e.Evaluator.Name,
+                        SurName = e.Evaluator.SurName,
+                    },
+                    Comment = e.Comment,
+                    Score = e.Score
+                })
             };
         }
 
@@ -144,7 +170,19 @@ namespace contests_app.API.Services.Team
                         Name = result.SelectedCase.Owner.Name,
                         SurName = result.SelectedCase.Owner.SurName,
                     }
-                }
+                },
+                Evaluations = result.Evaluations.Select(e => new Models.Evaluation
+                {
+                    Id = e.Id,
+                    Evaluator = new Models.User
+                    {
+                        Id = e.Evaluator.Id,
+                        Name = e.Evaluator.Name,
+                        SurName = e.Evaluator.SurName,
+                    },
+                    Comment = e.Comment,
+                    Score = e.Score
+                })
             };
         }
 
@@ -244,6 +282,50 @@ namespace contests_app.API.Services.Team
             teamEntity.SelectedCase = caseEntity;
 
             _dbContext.Teams.Update(teamEntity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddEvaluation(Guid teamId, Guid evaluatorId, int score, string? comment)
+        {
+            var teamEntity = await _dbContext.Teams
+                                             .Include(t => t.SelectedCase)
+                                             .Include(t => t.Evaluations)
+                                             .FirstOrDefaultAsync(x => x.Id == teamId);
+
+            var userEntity = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == evaluatorId);
+
+            if (userEntity == null || teamEntity == null)
+            {
+                throw new Exception("not found");
+            }
+
+            if (teamEntity.SelectedCase == null)
+            {
+                throw new Exception("case not selected");
+            }
+            
+            if (userEntity.IsAdmin == false && userEntity.IsMentor == false)
+            {
+                throw new Exception("you dont have permissions");
+            }
+
+            if (teamEntity.Evaluations.Any(e => e.EvaluatorId == evaluatorId))
+            {
+                throw new Exception("evaluation exists");
+            }
+
+            var evaluationEntity = new EvaluationEntity
+            {
+                Id = Guid.NewGuid(),
+                TeamId = teamId,
+                Team = teamEntity,
+                EvaluatorId = evaluatorId,
+                Evaluator = userEntity,
+                Score = score,
+                Comment = comment
+            };
+
+            await _dbContext.Evaluations.AddAsync(evaluationEntity);
             await _dbContext.SaveChangesAsync();
         }
     }

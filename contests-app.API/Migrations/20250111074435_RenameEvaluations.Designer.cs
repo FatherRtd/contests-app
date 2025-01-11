@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using contests_app.API.Persistence;
@@ -11,9 +12,11 @@ using contests_app.API.Persistence;
 namespace contests_app.API.Migrations
 {
     [DbContext(typeof(ContestsDbContext))]
-    partial class ContestsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250111074435_RenameEvaluations")]
+    partial class RenameEvaluations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,35 +149,35 @@ namespace contests_app.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dfdee906-a518-4379-b4c6-3f89d1b1f062"),
+                            Id = new Guid("0b761354-4e56-4c37-ae0c-10b15103ef54"),
                             Avatar = "https://material.angular.io/assets/img/examples/shiba1.jpg",
                             IsAdmin = false,
                             IsMentor = true,
                             Login = "mentor",
                             Name = "Mentor",
-                            PasswordHash = "$2a$11$lH2ihOr5y5hez/zPcNcVs.n4qgYeMntixbi.Er2aTSgCQj2AchNZO",
+                            PasswordHash = "$2a$11$oWCaC7MXgL53YwYQXEWr/u2F3/lK9D09gGjtQcxv6UpbvwySs5OFe",
                             SurName = "Mentor"
                         },
                         new
                         {
-                            Id = new Guid("7955e387-9445-477d-b0cf-75ebaca2599a"),
+                            Id = new Guid("ded6fcf7-7ad2-4216-855e-4f5a44665715"),
                             Avatar = "https://material.angular.io/assets/img/examples/shiba1.jpg",
                             IsAdmin = true,
                             IsMentor = false,
                             Login = "admin",
                             Name = "Admin",
-                            PasswordHash = "$2a$11$wvIRl2D9DZjDQ6c5oLUblu8BjbJ7r5W.IKQpzr3mS6/lS4wIGBTke",
+                            PasswordHash = "$2a$11$qq/cldQp9HxbVwWON48KNOFL045BDT440gAJD8jURyZ0nitOWrxl2",
                             SurName = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("a3873af6-b340-4665-981b-0a2800f78dc5"),
+                            Id = new Guid("790d07da-7abd-4f80-bffa-7edc3924df43"),
                             Avatar = "https://material.angular.io/assets/img/examples/shiba1.jpg",
                             IsAdmin = false,
                             IsMentor = false,
                             Login = "user",
                             Name = "User",
-                            PasswordHash = "$2a$11$LNtSiy9Doajy0WGzfkIKNu7.LFdBdDbdEP8hywD6cHtJ8uD3j7zua",
+                            PasswordHash = "$2a$11$.oHPyS3h1vrvhIaQvaPyJewNsSPOERiNyudAgkIWhOI5X3LeAK.iS",
                             SurName = "User"
                         });
                 });

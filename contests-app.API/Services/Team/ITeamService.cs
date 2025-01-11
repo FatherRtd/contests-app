@@ -9,5 +9,6 @@
         Task AddUser(Guid teamId, Guid userId);
         Task Delete(Guid teamId);
         Task SelectCase(Guid teamGuid, Guid caseGuid);
+        Task AddEvaluation(Guid teamId, Guid evaluatorId, int score, string? comment);
     }
 }

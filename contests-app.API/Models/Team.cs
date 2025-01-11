@@ -6,6 +6,20 @@
         public string Name { get; set; }
         public IEnumerable<User> Users { get; set; }
         public User Owner { get; set; }
-        public Case SelectedCase { get; set; }
+        public Case? SelectedCase { get; set; }
+        public IEnumerable<Evaluation> Evaluations { get; set; }
+
+        public double? AverageScore
+        {
+            get
+            {
+                if (Evaluations.Any() == false)
+                {
+                    return null;
+                }
+
+                return Evaluations.Select(x => x.Score).Sum() / Evaluations.Count();
+            }
+        }
     }
 }

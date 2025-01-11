@@ -24,6 +24,11 @@ namespace contests_app.API.Persistence.Configuration
                    .WithMany()
                    .HasForeignKey(t => t.SelectedCaseId)
                    .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(t => t.Evaluations)
+                   .WithOne(e => e.Team)
+                   .HasForeignKey(e => e.TeamId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

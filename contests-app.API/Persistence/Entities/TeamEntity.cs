@@ -12,5 +12,7 @@
 
         public Guid? SelectedCaseId { get; set; }
         public CaseEntity? SelectedCase { get; set; }
+
+        public ICollection<EvaluationEntity> Evaluations { get; set; }
     }
 }

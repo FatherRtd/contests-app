@@ -10,6 +10,7 @@ namespace contests_app.API.Persistence
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<TeamEntity> Teams { get; set; }
         public DbSet<CaseEntity> Cases { get; set; }
+        public DbSet<EvaluationEntity> Evaluations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
