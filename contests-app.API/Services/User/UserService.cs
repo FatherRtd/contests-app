@@ -69,8 +69,14 @@ namespace contests_app.API.Services.User
                     await _s3Storage.DeleteImageAsync(fileName);
                 }
 
-                var imageSrc = await _s3Storage.UploadImageAsync(byteArray, fileName);
-                user.Avatar = imageSrc;
+                try
+                {
+                    var imageSrc = await _s3Storage.UploadImageAsync(byteArray, fileName);
+                    user.Avatar = imageSrc;
+                } catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
             _dbContext.Users.Update(user);
