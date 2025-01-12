@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/useUserStore.ts'
 import FileUploader from '@/components/ui/upload/FileUploader.vue'
 import type { PatchUserRequest } from '@/services/user/models/PatchUserRequest.ts'
 import { updateUser } from '@/services/user/userService.ts'
+import { ElNotification } from 'element-plus'
 
 const { user } = storeToRefs(useUserStore())
 
@@ -36,7 +37,25 @@ const submit = async () => {
     isMentor: user.value.isMentor,
   }
 
-  user.value = await updateUser(request)
+  try {
+    user.value = await updateUser(request)
+  } catch (e) {
+    const error = e as Error
+
+    ElNotification({
+      title: 'Ошибка',
+      message: error.message,
+      type: 'error',
+      zIndex: 999999,
+    })
+  }
+
+  ElNotification({
+    title: '',
+    message: 'Профиль успешно обновлён',
+    type: 'success',
+    zIndex: 999999,
+  })
 }
 </script>
 
