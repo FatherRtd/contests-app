@@ -8,7 +8,7 @@ import type { PatchUserRequest } from '@/services/user/models/PatchUserRequest.t
 const users = ref<User[]>([])
 
 onMounted(async () => {
-  users.value = await all()
+  users.value = await all(0, 10)
 })
 
 const saveUser = async (index: number) => {
@@ -25,10 +25,17 @@ const saveUser = async (index: number) => {
 
   users.value[index] = await updateUser(request)
 }
+
+const page = ref(0)
+const onLoad = async () => {
+  page.value++
+  const result = await all(page.value, 10)
+  result.forEach((x) => users.value.push(x))
+}
 </script>
 
 <template>
-  <div class="w-full">
+  <div v-infinite-scroll="onLoad" class="w-full !h-[500px]">
     <div v-for="(user, index) in users" :key="user.id" class="mb-2">
       <div class="flex justify-between p-2 bg-gray-200 rounded w-full items-center">
         <div class="flex items-center space-x-2">

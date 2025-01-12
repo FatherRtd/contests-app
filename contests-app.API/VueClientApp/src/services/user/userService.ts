@@ -10,10 +10,16 @@ const allWithoutTeam = async () => {
   return response.data.map((x) => new User(x))
 }
 
-const all = async () => {
-  const response = await axios.get<User[]>('/api/user/all')
+const all = async (page?: number, size?: number) => {
+  if (page && size) {
+    const response = await axios.get<User[]>(`/api/user/all?page=${page}&size=${size}`)
 
-  return response.data.map((x) => new User(x))
+    return response.data.map((x) => new User(x))
+  } else {
+    const response = await axios.get<User[]>(`/api/user/all`)
+
+    return response.data.map((x) => new User(x))
+  }
 }
 
 const updateUser = async (request: PatchUserRequest) => {

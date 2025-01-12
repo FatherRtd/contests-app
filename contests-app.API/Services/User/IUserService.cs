@@ -8,6 +8,6 @@
 
         Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor, string avatar);
         Task<IEnumerable<Models.User>> AllWithoutTeamExcludeMe(Guid currentUser);
-        Task<IEnumerable<Models.User>> All();
+        Task<IEnumerable<Models.User>> All(int? page, int? size);
     }
 }

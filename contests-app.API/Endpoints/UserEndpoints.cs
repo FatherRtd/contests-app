@@ -45,11 +45,11 @@ namespace contests_app.API.Endpoints
             }
         }
 
-        private static async Task<IResult> All(HttpContext context, IUserService userService)
+        private static async Task<IResult> All(int? page, int? size, HttpContext context, IUserService userService)
         {
             try
             {
-                var result = await userService.All();
+                var result = await userService.All(page, size);
 
                 return Results.Ok(result);
             }

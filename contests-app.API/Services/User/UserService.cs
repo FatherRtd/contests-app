@@ -32,9 +32,14 @@ namespace contests_app.API.Services.User
             return users.Adapt<Models.User[]>();
         }
 
-        public async Task<IEnumerable<Models.User>> All()
+        public async Task<IEnumerable<Models.User>> All(int? page, int? size)
         {
             var users = await _dbContext.Users.ToListAsync();
+
+            if (page.HasValue && size.HasValue)
+            {
+                users = users.Skip(page.Value * size.Value).Take(size.Value).ToList();
+            }
 
             return users.Adapt<Models.User[]>();
         }
