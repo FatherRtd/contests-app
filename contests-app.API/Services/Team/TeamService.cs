@@ -124,6 +124,73 @@ namespace contests_app.API.Services.Team
             };
         }
 
+        public async Task<IEnumerable<Models.Team>> GetTeamsByCase(Guid id)
+        {
+            var caseItem = await _dbContext.Cases.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (caseItem == null)
+            {
+                throw new Exception("Case not found");
+            }
+
+            var result = await _dbContext.Teams
+                                         .Include(x => x.Owner)
+                                         .Include(x => x.Members)
+                                         .Include(x => x.SelectedCase).ThenInclude(c => c.Owner)
+                                         .Include(x => x.Evaluations).ThenInclude(x => x.Evaluator)
+                                         .Where(x => x.SelectedCaseId != null && x.SelectedCaseId == caseItem.Id)
+                                         .ToListAsync();
+
+            var mappedResult = result.Select(x => new Models.Team
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Owner = new Models.User
+                {
+                    Id = x.Owner.Id,
+                    Name = x.Owner.Name,
+                    SurName = x.Owner.SurName,
+                    Avatar = x.Owner.Avatar
+                },
+                Users = x.Members.Select(m => new Models.User
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    SurName = m.SurName,
+                    Avatar = m.Avatar
+                }),
+                SelectedCase = x.SelectedCase == null ? null : new Models.Case
+                {
+                    Id = x.SelectedCase.Id,
+                    Description = x.SelectedCase.Description,
+                    ImageUrl = x.SelectedCase.ImageUrl,
+                    Title = x.SelectedCase.Title,
+                    Owner = new Models.User
+                    {
+                        Id = x.SelectedCase.Owner.Id,
+                        Name = x.SelectedCase.Owner.Name,
+                        SurName = x.SelectedCase.Owner.SurName,
+                        Avatar = x.SelectedCase.Owner.Avatar
+                    }
+                },
+                Evaluations = x.Evaluations.Select(e => new Models.Evaluation
+                {
+                    Id = e.Id,
+                    Evaluator = new Models.User
+                    {
+                        Id = e.Evaluator.Id,
+                        Name = e.Evaluator.Name,
+                        SurName = e.Evaluator.SurName,
+                        Avatar = e.Evaluator.Avatar
+                    },
+                    Comment = e.Comment,
+                    Score = e.Score
+                })
+            });
+
+            return mappedResult;
+        }
+
         public async Task<Models.Team?> GetTeamByUser(Guid userId)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
@@ -137,6 +204,7 @@ namespace contests_app.API.Services.Team
                                          .Include(x => x.Owner)
                                          .Include(x => x.Members)
                                          .Include(x => x.SelectedCase).ThenInclude(c => c.Owner)
+                                         .Include(x => x.Evaluations).ThenInclude(c => c.Evaluator)
                                          .FirstOrDefaultAsync(x => x.Members.Contains(user));
 
             if (result == null)

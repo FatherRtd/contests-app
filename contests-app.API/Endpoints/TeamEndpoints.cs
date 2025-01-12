@@ -14,6 +14,7 @@ namespace contests_app.API.Endpoints
             endpoints.MapGet(nameof(ById), ById).RequireAuthorization();
             endpoints.MapGet(nameof(ByUser), ByUser).RequireAuthorization();
             endpoints.MapGet(nameof(My), My).RequireAuthorization();
+            endpoints.MapGet(nameof(ByCase), ByCase).RequireAuthorization();
             endpoints.MapPatch(nameof(AddUser), AddUser).RequireAuthorization();
             endpoints.MapDelete(nameof(Delete), Delete).RequireAuthorization();
             endpoints.MapPatch(nameof(SelectCase), SelectCase).RequireAuthorization();
@@ -98,6 +99,20 @@ namespace contests_app.API.Endpoints
             try
             {
                 var result = await teamService.GetTeamByUser(userId);
+
+                return Results.Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        }
+
+        public static async Task<IResult> ByCase(Guid caseId, ITeamService teamService)
+        {
+            try
+            {
+                var result = await teamService.GetTeamsByCase(caseId);
 
                 return Results.Ok(result);
             }

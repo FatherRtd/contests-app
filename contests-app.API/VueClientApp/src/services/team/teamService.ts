@@ -31,6 +31,11 @@ const byUser = async (id: string) => {
 
   return new Team(response.data)
 }
+const byCase = async (caseId: string) => {
+  const response = await axios.get<Team[]>(`/api/team/byCase?caseId=${caseId}`)
+
+  return response.data.map((x) => new Team(x))
+}
 const my = async () => {
   const response = await axios.get<Team>(`/api/team/my`)
 
@@ -43,4 +48,4 @@ const addEvaluation = async (request: AddEvaluationRequest) => {
   await axios.patch('/api/team/addEvaluation', request)
 }
 
-export { deleteTeam, all, create, addUser, byId, byUser, my, selectCase, addEvaluation }
+export { deleteTeam, all, create, addUser, byId, byUser, my, selectCase, addEvaluation, byCase }

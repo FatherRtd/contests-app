@@ -10,6 +10,12 @@ const allWithoutTeam = async () => {
   return response.data.map((x) => new User(x))
 }
 
+const all = async () => {
+  const response = await axios.get<User[]>('/api/user/all')
+
+  return response.data.map((x) => new User(x))
+}
+
 const updateUser = async (request: PatchUserRequest) => {
   const response = await axios.patch<User>('/api/user/updateUser', request)
 
@@ -46,4 +52,14 @@ const isAuthenticated = async () => {
   return response.data
 }
 
-export { updateUser, currentUser, byId, register, login, logout, isAuthenticated, allWithoutTeam }
+export {
+  updateUser,
+  currentUser,
+  byId,
+  register,
+  login,
+  logout,
+  isAuthenticated,
+  allWithoutTeam,
+  all,
+}

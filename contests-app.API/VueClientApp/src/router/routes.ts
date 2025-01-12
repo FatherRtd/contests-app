@@ -6,12 +6,14 @@ const routeNames = {
   register: 'register',
   profile: 'profile',
   cases: 'cases',
+  caseItem: 'caseItem',
   userEditing: 'userEditing',
 }
 
 const HomeView = () => import('@/views/HomeView.vue')
 const ProfileView = () => import('@/views/ProfileView.vue')
 const CasesView = () => import('@/views/CasesView.vue')
+const CaseView = () => import('@/views/CaseView.vue')
 const UserEditView = () => import('@/views/UserEditView.vue')
 const AuthView = () => import('@/views/AuthView.vue')
 const LoginForm = () => import('@/components/auth/LoginForm.vue')
@@ -37,6 +39,12 @@ const routes: RouteRecordRaw[] = [
     path: '/cases',
     component: CasesView,
     name: routeNames.cases,
+  },
+  {
+    path: '/case/:id',
+    component: CaseView,
+    name: routeNames.caseItem,
+    props: (route) => ({ id: route.params.id }),
   },
   {
     path: '/auth',

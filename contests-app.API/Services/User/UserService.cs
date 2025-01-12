@@ -32,6 +32,13 @@ namespace contests_app.API.Services.User
             return users.Adapt<Models.User[]>();
         }
 
+        public async Task<IEnumerable<Models.User>> All()
+        {
+            var users = await _dbContext.Users.ToListAsync();
+
+            return users.Adapt<Models.User[]>();
+        }
+
         public async Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor, string avatar)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);

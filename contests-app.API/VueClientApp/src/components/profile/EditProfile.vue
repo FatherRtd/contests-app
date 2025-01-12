@@ -44,7 +44,7 @@ const submit = async () => {
   <div>
     <div class="font-bold">Редактирование профиля</div>
     <el-form label-position="right" label-width="100">
-      <el-config-provider :empty-values="['undefined']" :value-on-clear="'undefined'">
+      <el-config-provider :value-on-clear="() => undefined" :empty-values="[undefined]">
         <el-form-item label="Аватар">
           <FileUploader v-model="avatarBase64" />
         </el-form-item>
