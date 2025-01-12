@@ -129,11 +129,11 @@ namespace contests_app.API.Endpoints
             }
         }
 
-        public static async Task<IResult> SelectCase(Guid teamId, Guid caseId, ITeamService teamService)
+        public static async Task<IResult> SelectCase(SelectCaseRequest request, ITeamService teamService)
         {
             try
             {
-                await teamService.SelectCase(teamId, caseId);
+                await teamService.SelectCase(request.TeamId, request.CaseId);
 
                 return Results.Ok();
             }

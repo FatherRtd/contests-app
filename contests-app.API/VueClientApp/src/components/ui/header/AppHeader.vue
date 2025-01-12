@@ -25,6 +25,8 @@ const { logout } = useAuthentication()
 const onLogout = async () => {
   await logout()
   userStore.clear()
+
+  await router.push({ name: routeNames.home })
 }
 </script>
 
@@ -41,7 +43,7 @@ const onLogout = async () => {
         <div class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Кейсы</div>
       </router-link>
 
-      <router-link :to="{ name: routeNames.userEditing }">
+      <router-link v-if="userStore.idAdmin" :to="{ name: routeNames.userEditing }">
         <div class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
           Управление пользователями
         </div>

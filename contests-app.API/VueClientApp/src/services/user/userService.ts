@@ -4,6 +4,12 @@ import { User } from '@/models/User.ts'
 import type { LoginUserRequest } from '@/services/user/models/LoginUserRequest.ts'
 import type { RegisterUserRequest } from '@/services/user/models/RegisterUserRequest.ts'
 
+const allWithoutTeam = async () => {
+  const response = await axios.get<User[]>('/api/user/allWithoutTeam')
+
+  return response.data.map((x) => new User(x))
+}
+
 const updateUser = async (request: PatchUserRequest) => {
   const response = await axios.patch<User>('/api/user/updateUser', request)
 
@@ -40,4 +46,4 @@ const isAuthenticated = async () => {
   return response.data
 }
 
-export { updateUser, currentUser, byId, register, login, logout, isAuthenticated }
+export { updateUser, currentUser, byId, register, login, logout, isAuthenticated, allWithoutTeam }

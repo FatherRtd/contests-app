@@ -22,6 +22,16 @@ namespace contests_app.API.Services.User
             _s3Storage = s3Storage;
         }
 
+        public async Task<IEnumerable<Models.User>> AllWithoutTeamExcludeMe(Guid currentUser)
+        {
+            var users = await _dbContext.Users
+                                        .Where(x => x.Id != currentUser)
+                                        .Where(x => x.TeamId == null)
+                                        .ToListAsync();
+
+            return users.Adapt<Models.User[]>();
+        }
+
         public async Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor, string avatar)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);

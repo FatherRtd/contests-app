@@ -7,6 +7,9 @@ export const useUserStore = defineStore('user', () => {
   const user = ref<User | undefined>()
   const isExists = computed(() => user.value != undefined)
 
+  const idAdmin = computed(() => user.value?.isAdmin ?? false)
+  const isMentor = computed(() => user.value?.isMentor ?? false)
+
   const loadUser = async () => {
     user.value = await currentUser()
   }
@@ -20,5 +23,7 @@ export const useUserStore = defineStore('user', () => {
     isExists,
     loadUser,
     clear,
+    idAdmin,
+    isMentor,
   }
 })

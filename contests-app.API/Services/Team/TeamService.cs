@@ -39,6 +39,7 @@ namespace contests_app.API.Services.Team
                     Id = m.Id,
                     Name = m.Name,
                     SurName = m.SurName,
+                    Avatar = m.Avatar
                 }),
                 SelectedCase = x.SelectedCase == null ? null : new Models.Case
                 {
@@ -93,8 +94,9 @@ namespace contests_app.API.Services.Team
                     Id = m.Id,
                     Name = m.Name,
                     SurName = m.SurName,
+                    Avatar = m.Avatar
                 }),
-                SelectedCase = new Models.Case
+                SelectedCase = result.SelectedCase == null ? null : new Models.Case
                 {
                     Id = result.SelectedCase.Id,
                     Description = result.SelectedCase.Description,
@@ -157,8 +159,9 @@ namespace contests_app.API.Services.Team
                     Id = m.Id,
                     Name = m.Name,
                     SurName = m.SurName,
+                    Avatar = m.Avatar
                 }),
-                SelectedCase = new Models.Case
+                SelectedCase = result.SelectedCase == null ? null : new Models.Case
                 {
                     Id = result.SelectedCase.Id,
                     Description = result.SelectedCase.Description,
@@ -171,7 +174,7 @@ namespace contests_app.API.Services.Team
                         SurName = result.SelectedCase.Owner.SurName,
                     }
                 },
-                Evaluations = result.Evaluations.Select(e => new Models.Evaluation
+                Evaluations = result.Evaluations == null ? new List<Evaluation>() : result.Evaluations.Select(e => new Models.Evaluation
                 {
                     Id = e.Id,
                     Evaluator = new Models.User

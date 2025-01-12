@@ -14,6 +14,7 @@ namespace contests_app.API.Endpoints
             endpoints.MapGet(nameof(CurrentUser), CurrentUser).RequireAuthorization();
             endpoints.MapPatch(nameof(UpdateUser), UpdateUser).RequireAuthorization();
             endpoints.MapGet(nameof(Logout), Logout).RequireAuthorization();
+            endpoints.MapGet(nameof(AllWithoutTeam), AllWithoutTeam).RequireAuthorization();
 
             endpoints.MapGet(nameof(IsAuthenticated), IsAuthenticated);
             endpoints.MapPost(nameof(Register), Register);
@@ -21,8 +22,28 @@ namespace contests_app.API.Endpoints
 
             return endpoints;
         }
-        
 
+        private static async Task<IResult> AllWithoutTeam(HttpContext context, IUserService userService)
+        {
+            try
+            {
+                var userIdClaim = context.User.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var userId = new Guid(userIdClaim);
+                var result = await userService.AllWithoutTeamExcludeMe(userId);
+
+                return Results.Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        }
+        
         private static async Task<IResult> UpdateUser(PatchUserRequest request, IUserService userService)
         {
             try

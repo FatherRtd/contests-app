@@ -7,5 +7,6 @@
         Task<string> Login(string login, string password);
 
         Task<Models.User> UpdateUser(Guid id, string name, string surName, bool isAdmin, bool isMentor, string avatar);
+        Task<IEnumerable<Models.User>> AllWithoutTeamExcludeMe(Guid currentUser);
     }
 }
