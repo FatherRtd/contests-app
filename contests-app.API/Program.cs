@@ -20,6 +20,8 @@ builder.Services.AddDbContext<ContestsDbContext>(options =>
 
 builder.Services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
+builder.Services.AddSpaStaticFiles(config => config.RootPath = "wwwroot");
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,10 +53,17 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseSpaStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSpa(spa =>
+{
+    spa.Options.SourcePath = "wwwroot";
+});
 
 app.AddMappedEndpoints();
 

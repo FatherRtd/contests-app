@@ -20,7 +20,7 @@ const selectedCaseId = ref<string>()
 const team = defineModel<Team>({ required: true })
 
 const { user } = storeToRefs(useUserStore())
-const currentUserIsOwner = computed(() => user.value && user.value.id == team.value.owner.id)
+const currentUserIsOwner = computed(() => user.value && user.value.id == team.value?.owner?.id)
 
 const addToTeam = async () => {
   if (selectedUserId.value == undefined) {
