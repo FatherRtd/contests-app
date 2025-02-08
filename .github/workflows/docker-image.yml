@@ -28,5 +28,4 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Tag and Push Docker Hub
       run: |
-        docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_IMAGE_NAME }}:dev
-        docker push --all-tags ${{ env.DOCKER_IMAGE_NAME }}
+        docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
