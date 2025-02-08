@@ -32,7 +32,7 @@ RUN dotnet publish "contests-app.API.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=node /src/dist /app/wwwroot/
+COPY --from=node /wwwroot/ /app/wwwroot/
 
 # Запуск приложения
 ENTRYPOINT ["dotnet", "contests-app.API.dll"]
