@@ -6,13 +6,18 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  DOCKER_IMAGE_NAME: fatherrtd/contests-app
+
 jobs:
 
-  build:
+  build-and-push:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: |
+        cd ./
+        docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE_NAME }}:latest
