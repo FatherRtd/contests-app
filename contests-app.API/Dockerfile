@@ -12,7 +12,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["contests-app.API/contests-app.API.csproj", "contests-app.API/"]
+COPY ["./contests-app.API/contests-app.API.csproj", "./contests-app.API/"]
 RUN dotnet restore "./contests-app.API/contests-app.API.csproj"
 COPY . .
 WORKDIR "/src/contests-app.API"
