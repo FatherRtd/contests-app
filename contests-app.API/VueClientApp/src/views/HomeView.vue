@@ -3,7 +3,7 @@
 <template>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 pt-20 text-center lg:pt-32 mt-10">
     <div class="mt-10 flex justify-center gap-x-6 flex-col items-center">
-      <div>Watchtower check 2</div>
+      <div>Watchtower check 3</div>
       <h1
         class="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl"
       >
