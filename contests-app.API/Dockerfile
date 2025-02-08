@@ -18,6 +18,13 @@ COPY . .
 WORKDIR "/src/contests-app.API"
 RUN dotnet build "./contests-app.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+FROM node:20 AS node
+WORKDIR /src
+COPY contests-app.API/VueClientApp/ /src/
+RUN npm install --no-audit \
+
+      && npm run build
+
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
@@ -27,4 +34,5 @@ RUN dotnet publish "./contests-app.API.csproj" -c $BUILD_CONFIGURATION -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=node /wwwroot/ /app/wwwroot/
 ENTRYPOINT ["dotnet", "contests-app.API.dll"]
