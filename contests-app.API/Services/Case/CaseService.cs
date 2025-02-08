@@ -1,6 +1,8 @@
-﻿using contests_app.API.Persistence;
+﻿using contests_app.API.Models;
+using contests_app.API.Persistence;
 using contests_app.API.Persistence.Entities;
 using contests_app.API.Services.S3;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace contests_app.API.Services.Case
@@ -60,6 +62,28 @@ namespace contests_app.API.Services.Case
             };
             
             return model;
+        }
+
+        public async Task<IEnumerable<Models.Case>> My(Guid userId)
+        {
+            var cases = await _dbContext.Cases.Include(x => x.Owner).Where(x => x.OwnerId == userId).ToListAsync();
+
+            return cases.Adapt<Models.Case[]>();
+        }
+
+        public async Task<IEnumerable<Models.Case>> All()
+        {
+            var cases = await _dbContext.Cases.Include(x => x.Owner).ToListAsync();
+
+            return cases.Adapt<Models.Case[]>();
+        }
+
+        public async Task<Models.Case> ById(Guid id)
+        {
+            var caseItem = await _dbContext.Cases.Include(x => x.Owner)
+                                       .FirstOrDefaultAsync(x => x.Id == id);
+
+            return caseItem.Adapt<Models.Case>();
         }
     }
 }

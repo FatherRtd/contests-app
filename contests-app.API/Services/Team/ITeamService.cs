@@ -4,6 +4,7 @@
     {
         Task<IEnumerable<Models.Team>> GetTeams();
         Task<Models.Team> GetTeamById(Guid id);
+        Task<IEnumerable<Models.Team>> GetTeamsByCase(Guid id);
         Task<Models.Team?> GetTeamByUser(Guid userId);
         Task<Models.Team> CreateTeam(string name, Guid userGuid);
         Task AddUser(Guid teamId, Guid userId);
